@@ -33,17 +33,30 @@ public final class CustomDeserializer extends JsonDeserializer<BlobHierarchyList
     public BlobHierarchyListSegment deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         ArrayList<BlobItem> blobItems = new ArrayList<>();
         ArrayList<BlobPrefix> blobPrefixes = new ArrayList<>();
-        p.nextToken();
-        p.nextToken();
+
         JsonDeserializer<Object> blobItemDeserializer = ctxt.findRootValueDeserializer(ctxt.constructType(BlobItem.class));
+        JsonDeserializer<Object> blobPrefixDeserializer = ctxt.findRootValueDeserializer(ctxt.constructType(BlobPrefix.class));
+
+        /*p.nextToken();
+        p.nextToken();
+
         Object result = blobItemDeserializer.deserialize(p, ctxt);
+        p.nextToken();
+        p.nextToken();
+        result = blobPrefixDeserializer.deserialize(p, ctxt);*/
         // I think I want a JavaType so I can do a getValueHandler so I can deserialize it through Jackson instead of doing it myself.
         //TypeFactory.defaultInstance().constructParametricType(BlobItem.class)
         //JsonDeserializer<BlobItem> blobItemDeserializer = ctxt.findContextualValueDeserializer(TypeFactory.rawClass())
 
         for (JsonToken currentToken = p.nextToken(); currentToken != null; currentToken = p.nextToken()) {
+            // Get to the root element of the next item.
+            p.nextToken();
+
             if (p.getCurrentName().equals("Blob")) {
-                // ctxt.find
+                blobItems.add((BlobItem)blobItemDeserializer.deserialize(p, ctxt));
+            }
+            else if (p.getCurrentName().equals("BlobPrefix")) {
+                blobPrefixes.add((BlobPrefix)blobPrefixDeserializer.deserialize(p, ctxt));
             }
         }
 
