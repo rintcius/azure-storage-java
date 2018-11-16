@@ -12,8 +12,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
+    <groupId>com.slamdata</groupId>
+    <artifactId>azure-storage-blob-custom</artifactId>
     <version>10.2.0</version>
 
     <name>Azure Storage Blob</name>
@@ -35,6 +35,9 @@
     </scm>
 
     <properties>
+        <bintray.subject>slamdata-inc</bintray.subject>
+        <bintray.repo>maven-public</bintray.repo>
+        <bintray.package>azure-storage-blob-custom</bintray.package>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal>
             <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
@@ -180,4 +183,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-repo</id>
+            <url>https://api.bintray.com/maven/${bintray.subject}/${bintray.repo}/${bintray.package}/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
 </project>
